@@ -47,10 +47,12 @@ class Egg {
     this.velocity = 3;
     this.image = new Image();
     this.image.src = img;
+    this.width = EGG_WIDTH;
+    this.height = EGG_HEIGHT;
   }
 
   draw() {
-    context.drawImage(this.image, this.x, this.y, EGG_WIDTH, EGG_HEIGHT);
+    context.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 
   update() {
@@ -96,6 +98,15 @@ const update = () => {
   for (let i = 0; i < EGGS.length; i++) {
     EGGS[i].update();
     EGGS[i].draw();
+
+    if (
+      EGGS[i].x < basket.x + basket.width &&
+      EGGS[i].x + EGGS[i].width > basket.x &&
+      EGGS[i].y < basket.y + basket.height &&
+      EGGS[i].y + EGGS[i].height > basket.y
+    ) {
+      EGGS.splice(i, 1);
+    }
   }
 };
 
