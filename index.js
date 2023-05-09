@@ -5,19 +5,40 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // GAME VARIABLES
+let SCORE = 0;
 const FPS = 60;
 const EGGS = [];
 const EGG_WIDTH = 100;
 const EGG_HEIGHT = 100;
+const SCORE_WIDTH = 400;
+const SCORE_HEIGHT = 200;
 const EGG_IMAGE = "./egg.png";
 const MOUSE = { x: 100, y: 100 };
 const BASKET_IMAGE = "./basket.png";
+const SCORE_IMAGE = "./score.png";
 const EGG_SPAWN = 3000; // 3 seconds
 
 // Mouse position
 canvas.addEventListener("mousemove", (e) => {
   MOUSE.x = e.clientX;
 });
+
+class Score {
+  constructor(x, y, img) {
+    this.x = x;
+    this.y = y;
+    this.image = new Image();
+    this.image.src = img;
+  }
+
+  draw() {
+    context.drawImage(this.image, this.x, this.y, SCORE_WIDTH, SCORE_HEIGHT);
+
+    context.font = "50px Pixel";
+    context.fillStyle = "blue";
+    context.fillText(SCORE, canvas.width / 2 + 250, 0 + SCORE_HEIGHT / 2 + 30);
+  }
+}
 
 class Basket {
   constructor(x, y, img) {
@@ -61,6 +82,7 @@ class Egg {
 }
 
 const basket = new Basket(MOUSE.x, canvas.height - 220, BASKET_IMAGE);
+const scoreBoard = new Score((canvas.width - SCORE_WIDTH) / 2, 20, SCORE_IMAGE);
 
 // Spawn eggs
 const spawEggs = () => {
@@ -86,6 +108,10 @@ const start = () => {
   basket.image.onload = () => {
     basket.draw();
   };
+
+  scoreBoard.image.onload = () => {
+    scoreBoard.draw();
+  };
 };
 
 /**
@@ -94,6 +120,8 @@ const start = () => {
 const update = () => {
   basket.update(MOUSE.x);
   basket.draw();
+
+  scoreBoard.draw();
 
   for (let i = 0; i < EGGS.length; i++) {
     EGGS[i].update();
@@ -105,6 +133,14 @@ const update = () => {
       EGGS[i].y < basket.y + basket.height &&
       EGGS[i].y + EGGS[i].height > basket.y
     ) {
+      EGGS.splice(i, 1);
+      SCORE++;
+    }
+
+    /**
+     * Remove eggs from the array if it goes out of bound
+     */
+    if (EGGS[i].y > window.innerHeight) {
       EGGS.splice(i, 1);
     }
   }
