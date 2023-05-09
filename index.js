@@ -14,20 +14,29 @@ const MOUSE = { x: 100, y: 100 };
 const BASKET_IMAGE = "./basket.png";
 const EGG_SPAWN = 3000; // 3 seconds
 
+// Mouse position
+canvas.addEventListener("mousemove", (e) => {
+  MOUSE.x = e.clientX;
+});
+
 class Basket {
   constructor(x, y, img) {
     this.x = x;
     this.y = y;
+    this.width = 500;
+    this.height = 250;
     this.image = new Image();
     this.image.src = img;
   }
 
   draw() {
-    context.drawImage(this.image, this.x, this.y);
+    context.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 
   update(x) {
-    this.x = x;
+    if (MOUSE.x > 0 && MOUSE.x + this.width < canvas.width) {
+      this.x = x;
+    }
   }
 }
 
@@ -49,12 +58,7 @@ class Egg {
   }
 }
 
-// Mouse position
-canvas.addEventListener("mousemove", (e) => {
-  MOUSE.x = e.clientX;
-});
-
-const basket = new Basket(MOUSE.x, canvas.height - 200, BASKET_IMAGE);
+const basket = new Basket(MOUSE.x, canvas.height - 220, BASKET_IMAGE);
 
 // Spawn eggs
 const spawEggs = () => {
