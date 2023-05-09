@@ -6,12 +6,12 @@ canvas.height = window.innerHeight;
 
 // GAME VARIABLES
 const FPS = 60;
-const EGG_IMAGE = "./egg.png";
-const BASKET_IMAGE = "./basket.png";
+const EGGS = [];
 const EGG_WIDTH = 100;
 const EGG_HEIGHT = 100;
+const EGG_IMAGE = "./egg.png";
 const MOUSE = { x: 100, y: 100 };
-const EGGS = [];
+const BASKET_IMAGE = "./basket.png";
 const EGG_SPAWN = 3000; // 3 seconds
 
 class Basket {
@@ -36,12 +36,17 @@ class Egg {
   constructor(x, y, img) {
     this.x = x;
     this.y = y;
+    this.velocity = 3;
     this.image = new Image();
     this.image.src = img;
   }
 
   draw() {
     context.drawImage(this.image, this.x, this.y, EGG_WIDTH, EGG_HEIGHT);
+  }
+
+  update() {
+    this.y += this.velocity;
   }
 }
 
@@ -52,15 +57,6 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 const basket = new Basket(MOUSE.x, MOUSE.y, BASKET_IMAGE);
-
-/**
- * Runs only once
- */
-const start = () => {
-  basket.image.onload = () => {
-    basket.draw();
-  };
-};
 
 // Spawn eggs
 const spawEggs = () => {
@@ -80,6 +76,15 @@ const spawEggs = () => {
 };
 
 /**
+ * Runs only once
+ */
+const start = () => {
+  basket.image.onload = () => {
+    basket.draw();
+  };
+};
+
+/**
  * Runs on every frame
  */
 const update = () => {
@@ -87,6 +92,7 @@ const update = () => {
   basket.draw();
 
   for (let i = 0; i < EGGS.length; i++) {
+    EGGS[i].update();
     EGGS[i].draw();
   }
 };
