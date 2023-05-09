@@ -26,9 +26,8 @@ class Basket {
     context.drawImage(this.image, this.x, this.y);
   }
 
-  update(x, y) {
+  update(x) {
     this.x = x;
-    this.y = y;
   }
 }
 
@@ -53,10 +52,9 @@ class Egg {
 // Mouse position
 canvas.addEventListener("mousemove", (e) => {
   MOUSE.x = e.clientX;
-  MOUSE.y = e.clientY;
 });
 
-const basket = new Basket(MOUSE.x, MOUSE.y, BASKET_IMAGE);
+const basket = new Basket(MOUSE.x, canvas.height - 200, BASKET_IMAGE);
 
 // Spawn eggs
 const spawEggs = () => {
@@ -88,7 +86,7 @@ const start = () => {
  * Runs on every frame
  */
 const update = () => {
-  basket.update(MOUSE.x, MOUSE.y);
+  basket.update(MOUSE.x);
   basket.draw();
 
   for (let i = 0; i < EGGS.length; i++) {
