@@ -13,10 +13,10 @@ const EGG_WIDTH = 100;
 const EGG_HEIGHT = 100;
 const SCORE_WIDTH = 400;
 const SCORE_HEIGHT = 200;
-const EGG_IMAGE = "./egg.png";
 const MOUSE = { x: 100, y: 100 };
-const BASKET_IMAGE = "./basket.png";
-const SCORE_IMAGE = "./score.png";
+const EGG_IMAGE = "./public/assets/egg.png";
+const SCORE_IMAGE = "./public/assets/score.png";
+const BASKET_IMAGE = "./public/assets/basket.png";
 const EGG_SPAWN = 3000; // 3 seconds
 
 // Mouse position
