@@ -8,6 +8,7 @@ canvas.height = window.innerHeight;
 let SCORE = 0;
 const FPS = 60;
 const EGGS = [];
+let ANIMATION_ID;
 const EGG_WIDTH = 100;
 const EGG_HEIGHT = 100;
 const SCORE_WIDTH = 400;
@@ -85,7 +86,7 @@ const basket = new Basket(MOUSE.x, canvas.height - 220, BASKET_IMAGE);
 const scoreBoard = new Score((canvas.width - SCORE_WIDTH) / 2, 20, SCORE_IMAGE);
 
 // Spawn eggs
-const spawEggs = () => {
+const spawnEggs = () => {
   setInterval(() => {
     const coordinate = {
       xAxis: Math.random() * canvas.width,
@@ -99,6 +100,12 @@ const spawEggs = () => {
       egg.draw();
     };
   }, EGG_SPAWN);
+};
+
+const gameOver = () => {
+  clearInterval(ANIMATION_ID);
+  alert("Game over");
+  window.location.reload();
 };
 
 /**
@@ -127,6 +134,9 @@ const update = () => {
     EGGS[i].update();
     EGGS[i].draw();
 
+    /**
+     * Detect if an egg hits the basket
+     */
     if (
       EGGS[i].x < basket.x + basket.width &&
       EGGS[i].x + EGGS[i].width > basket.x &&
@@ -142,14 +152,15 @@ const update = () => {
      */
     if (EGGS[i].y > window.innerHeight) {
       EGGS.splice(i, 1);
+      gameOver();
     }
   }
 };
 
 start();
-spawEggs();
+spawnEggs();
 
-setInterval(() => {
+ANIMATION_ID = setInterval(() => {
   context.clearRect(0, 0, canvas.width, canvas.height);
   update();
 }, 1000 / FPS);
