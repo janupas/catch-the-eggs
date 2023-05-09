@@ -24,6 +24,13 @@ canvas.addEventListener("mousemove", (e) => {
   MOUSE.x = e.clientX;
 });
 
+class Screen {
+  static toggle(id, status) {
+    const element = document.getElementById(id);
+    element.style.display = status ? "block" : "none";
+  }
+}
+
 class Score {
   constructor(x, y, img) {
     this.x = x;
@@ -104,8 +111,12 @@ const spawnEggs = () => {
 
 const gameOver = () => {
   clearInterval(ANIMATION_ID);
-  alert("Game over");
-  window.location.reload();
+  Screen.toggle("game-over", true);
+
+  setTimeout(() => {
+    Screen.toggle("game-over", false);
+    window.location.reload();
+  }, 2000);
 };
 
 /**
